@@ -6,9 +6,17 @@ using System.Threading.Tasks;
 
 namespace Entities
 {
-    public interface BaseExpense
+    public abstract class BaseExpense
     {
-        void Validate();
-        void Save();
+        public bool IsValid { get; set; }
+        abstract void Validate();
+        abstract void Save();
+        abstract string GetMessage();
+        public string ClaimExpense()
+        {
+            Validate();
+            Save();
+            return GetMessage();
+        }
     }
 }

@@ -26,7 +26,7 @@ namespace Entities
          * */
 
         private string costCenter;
-        [XmlElement("")]
+        [XmlElement("cost_center")]
         public string CostCenter 
         {
             get
@@ -38,6 +38,7 @@ namespace Entities
                 costCenter = value;
             }
         }
+        [XmlElement("total")]
         public double Total { get; set; }
         public double TotalExcludingGST
         {
@@ -46,13 +47,18 @@ namespace Entities
                 return Total / _GST;
             }
         }
+        [XmlElement("description")]
         public string Description { get; set; }
+        [XmlElement("payment_method")]
         public string PaymentMethod { get; set; }
 
         void BaseExpense.Validate()
         {
-            if(Total == null)
-                throw new ExpenseValidationException("The total field needs to be specified.")
+            if (Total == null)
+            {
+                base.IsValid = false;
+                throw new ExpenseValidationException("The total field needs to be specified.");
+            }
         }
 
         void BaseExpense.Save()

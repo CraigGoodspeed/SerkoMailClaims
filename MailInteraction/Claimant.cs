@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 
 namespace MailInteraction
 {
-    abstract class Claimant
+    public abstract class Claimant
     {
         public string claimant { get; set; }
     }

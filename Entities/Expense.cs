@@ -26,7 +26,7 @@ namespace Entities
          * */
 
         private string costCenter;
-        [XmlElement("cost_center")]
+        [XmlElement("cost_centre")]
         public string CostCenter 
         {
             get
@@ -52,7 +52,7 @@ namespace Entities
         [XmlElement("payment_method")]
         public string PaymentMethod { get; set; }
 
-        void BaseExpense.Validate()
+        protected override void Validate()
         {
             if (Total == null)
             {
@@ -61,9 +61,14 @@ namespace Entities
             }
         }
 
-        void BaseExpense.Save()
+        protected override void Save()
         {
             //TODO: Implement storage.
+        }
+
+        protected override string GetMessage()
+        {
+            return string.Empty;
         }
     }
 }

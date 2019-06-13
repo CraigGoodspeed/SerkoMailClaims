@@ -37,21 +37,7 @@ namespace MailInteraction
 
         public List<ClaimMail> getStringMessages(string subject)
         {
-            return getMessages(subject).Where(i => i.Attachments.Count() == 0).Select(msg => new ClaimMail() { claimant = msg.From, body = msg.Body }).ToList();
-        }
-        /// <summary>
-        /// there are possibly many attachments
-        /// </summary>
-        /// <param name="subject"></param>
-        /// <returns></returns>
-        public List<ClaimAttachment> getAttachmentMessages(string subject)
-        {
-            List<ClaimDetails> toReturn = new List<ClaimDetails>();
-            List<Pop3Message> withAttachments = getMessages(subject).Where(i => i.Attachments.Count() > 0).ToList();
-            foreach(Pop3Message message in withAttachments){
-                toReturn.AddRange(message.Attachments.Where(msg => msg.Name.ToLower().IndexOf("claim") == 0).Select(att => new ClaimDetails() { claimant = username, attachmentBody=att.GetData() }).ToList());
-            }
-            return toReturn;
+            return getMessages(subject).Select(msg => new ClaimMail() { claimant = msg.From, body = msg.Body }).ToList();
         }
 
         public void sendMessage(string toAddress, string body, string subject)

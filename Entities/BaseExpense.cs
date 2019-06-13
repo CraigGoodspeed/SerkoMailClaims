@@ -9,9 +9,9 @@ namespace Entities
     public abstract class BaseExpense
     {
         public bool IsValid { get; set; }
-        abstract void Validate();
-        abstract void Save();
-        abstract string GetMessage();
+        protected abstract void Validate();
+        protected abstract void Save();
+        protected abstract string GetMessage();
         public string ClaimExpense()
         {
             Validate();

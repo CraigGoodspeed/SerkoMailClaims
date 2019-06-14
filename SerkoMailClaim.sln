@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entiti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailHandler", "MailHandler\MailHandler.csproj", "{9601B18F-ECDA-41E0-BB93-35EDEDF52B6F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailboxMonitor", "MailboxMonitor\MailboxMonitor.csproj", "{FC289E0E-2BF3-48F2-AB7C-D2223E368EE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{9601B18F-ECDA-41E0-BB93-35EDEDF52B6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9601B18F-ECDA-41E0-BB93-35EDEDF52B6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9601B18F-ECDA-41E0-BB93-35EDEDF52B6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC289E0E-2BF3-48F2-AB7C-D2223E368EE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC289E0E-2BF3-48F2-AB7C-D2223E368EE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC289E0E-2BF3-48F2-AB7C-D2223E368EE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC289E0E-2BF3-48F2-AB7C-D2223E368EE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

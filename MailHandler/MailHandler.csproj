@@ -43,14 +43,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Entities\Entities.csproj">
-      <Project>{a63088d3-c71e-4e47-9c0c-036a4cc52bb1}</Project>
-      <Name>Entities</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MailInteraction\MailInteraction.csproj">
       <Project>{7f01300e-5584-4bba-9fd6-57b700eee031}</Project>
       <Name>MailInteraction</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

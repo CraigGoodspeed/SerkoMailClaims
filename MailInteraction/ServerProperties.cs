@@ -8,6 +8,7 @@ namespace MailInteraction
 {
     public class ServerProperties
     {
+        public ServerProperties() { }
         public string url{get; set;}
         public int port { get; set; }
         public bool useSSL { get; set; }

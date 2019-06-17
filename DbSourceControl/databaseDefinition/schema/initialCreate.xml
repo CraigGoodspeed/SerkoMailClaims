@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+  <changeSet author="craig" id="initial_request_1.1">
+    <createTable tableName="request">
+      <column name="id" type="int" autoIncrement="true">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_request"/>
+      </column>
+      <column name="mail_from" type="varchar(1000)" >
+        <constraints nullable="false"/>
+      </column>
+      <column name="mail_content" type="MEDIUMBLOB">
+        <constraints nullable="false"/>
+      </column>
+      <column name="create_date" type="DATETIME">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet author="craig" id="expense_table_1.1">
+    <createTable tableName="expense">
+      <column name="id" type="int" autoIncrement="true">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_request"/>
+      </column>
+      <!--
+        /*
+         * <expense>
+         *  <cost_centre>DEV002</cost_centre>
+         *  <total>1024.01</total>
+         * <payment_method>personal card</payment_method>
+         * <vendor>Viaduct Steakhouse</vendor>
+         * <description>development team’s project end celebration dinner</description>
+         * <date>Tuesday 27 April 2017</date>
+         *</expense>
+         * */
+    -->
+      <column name="cost_centre" type="varchar(100)" />
+      <column name="total" type="decimal(12,2)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="payment_method" type="varchar(100)"/>
+      <column name="vendor" type="varchar(100)"/>
+      <column name="description" type="varchar(500)"/>
+      <column name="expense_date" type="date"></column>
+      <column name="request_id" type="int">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet id="expense_request_fk_1.1" author="craig">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <foreignKeyConstraintExists foreignKeyName="FK_EXPENSE_REQUEST" foreignKeyTableName="expense"/>
+      </not>
+    </preConditions>
+    <addForeignKeyConstraint constraintName="FK_EXPENSE_REQUEST" baseTableName="expense" baseColumnNames="request_id" referencedTableName="request" referencedColumnNames="id"/>
+  </changeSet>  
+</databaseChangeLog>

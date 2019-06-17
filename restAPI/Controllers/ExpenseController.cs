@@ -8,6 +8,11 @@ using System.Xml;
 
 namespace restAPI.Controllers
 {
+    /// <summary>
+    /// Please note the requirement dictated receive an input string and parse the document.
+    /// This is why this controller is in place, to simply read and return an XmlDocument.
+    /// There is no need for the rest API to have knowledge of how to deserialise the document.
+    /// </summary>
     [Route("~/expense/claim")]
     public class ExpenseController : ApiController
     {

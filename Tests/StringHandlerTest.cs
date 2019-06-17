@@ -3,7 +3,7 @@ using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MailHandler;
 using System.Xml.Serialization;
-using Entities;
+using DataLayer.DTO;
 
 namespace Tests
 {
@@ -24,14 +24,14 @@ namespace Tests
         {
             string toParse = "Hi Yvaine,\nPlease create an expense claim for the below.\nrequested...\nRelevant details are marked up as\n<expense><cost_centre>DEV002</cost_centre>\n<total>1024.01</total><payment_method>personal card</payment_method>\n</expense>\nFrom: Ivan Castle\nSent: Friday, 16 February 2018 10:32 AM\nTo: Antoine Lloyd <Antoine.Lloyd@example.com>\nSubject: test\nHi Antoine,\nPlease create a reservation at the <vendor>Viaduct Steakhouse</vendor> our\n<description>development team’s project end celebration dinner</description> on\n<date>Tuesday 27 April 2017</date>. We expect to arrive around\n7.15pm. Approximately 12 people but I’ll confirm exact numbers closer to the day.\nRegards,\nIvan";
             XmlDocument parsedSample = StringHelper.ParseString(toParse);
-            Expense expenseClaim = null;
-            XmlSerializer serial = new XmlSerializer(typeof(Expense));
+            ExpenseDTO expenseClaim = null;
+            XmlSerializer serial = new XmlSerializer(typeof(ExpenseDTO));
             using (XmlReader reader = new XmlNodeReader(parsedSample))
             {
-                expenseClaim = (Expense)serial.Deserialize(reader);
+                expenseClaim = (ExpenseDTO)serial.Deserialize(reader);
             }
-            Assert.IsTrue(expenseClaim.Total == 1024.01d);
-            Assert.IsTrue(expenseClaim.CostCenter == "DEV002");
+            Assert.IsTrue(expenseClaim.Total == new decimal(1024.01d));
+            Assert.IsTrue(expenseClaim.CostCentre == "DEV002");
 
 
         }

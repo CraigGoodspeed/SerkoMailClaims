@@ -1,0 +1,17 @@
+﻿<mailConfig>
+  <smtpProperties>
+    <ServerProperties type="MailInteraction.ServerProperties, ServerProperties">
+      <url>smtp.gmail.com</url>
+      <port>587</port>
+      <useSSL>true</useSSL>
+    </ServerProperties>
+  </smtpProperties>
+  <pop3Properties>
+    <ServerProperties type="MailInteraction.ServerProperties, ServerProperties">
+      <url>pop.gmail.com</url>
+      <port>995</port>
+      <useSSL>true</useSSL>
+    </ServerProperties>
+  </pop3Properties>
+  <credentials username="serkomailclaims@gmail.com" password="Th!$!$$3cur3!"/>
+</mailConfig>

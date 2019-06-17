@@ -96,6 +96,11 @@ namespace MailHandler
             return !reg.IsMatch(elementName);
         }
 
+        public static T deserialiseContent<T>(XmlDocument xdoc)
+        {
+            return deserialiseContent<T>(xdoc.OuterXml);
+        }
+
         public static T deserialiseContent<T>(string body)
         {
             XmlDocument parsedSample = StringHelper.ParseString(body);

@@ -1,5 +1,4 @@
-﻿using MailInteraction.Claim;
-using Pop3;
+﻿using Pop3;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,9 +34,9 @@ namespace MailInteraction
             return messages.Where(i => i.Subject.ToUpper().IndexOf(subject.ToUpper()) > -1).ToList();
         }
 
-        public List<ClaimMail> getStringMessages(string subject)
+        public List<Pop3Message> getStringMessages(string subject)
         {
-            return getMessages(subject).Select(msg => new ClaimMail() { claimant = msg.From, body = msg.Body }).ToList();
+            return getMessages(subject);
         }
 
         public void sendMessage(string toAddress, string body, string subject)

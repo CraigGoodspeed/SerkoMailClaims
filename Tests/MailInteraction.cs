@@ -2,9 +2,12 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MailInteraction;
 using System.Collections.Generic;
-using MailInteraction.Claim;
-using Entities;
 using MailHandler;
+using Pop3;
+using DataLayer.DTO;
+using DataLayer;
+using System.Xml;
+using BusinessLayer;
 
 namespace Tests
 {
@@ -29,24 +32,26 @@ namespace Tests
         public void CheckGmailConnection()
         {
             checkMessageSend();
-            List<ClaimMail> details = helper.getStringMessages("claim");
-            foreach (ClaimMail claim in details)
+            List<Pop3.Pop3Message> details = helper.getStringMessages("claim");
+            foreach (Pop3Message claim in details)
             {
-                Expense ex = StringHelper.deserialiseContent<Expense>(claim.body);
-                if(ex.Total != 0.0d)
-                    Assert.IsTrue(ex.Total == 1024.01d);
-                helper.sendMessage(claim.claimant, "thank you for submitting your claim, it is busy being processed.", "this claim is being processed");
+                ExpenseDTO ex = StringHelper.deserialiseContent<ExpenseDTO>(claim.RawMessage);
+                if(ex.Total != 0)
+                    Assert.IsTrue(ex.Total == new decimal(1024.01d));
+                helper.sendMessage(claim.From, "thank you for submitting your claim, it is busy being processed.", "this claim is being processed");
             }
         }
 
 
-        //[TestMethod]
-        //public void CheckAttachments()
-        //{
-        //    checkMessageSend();
-        //    List<ClaimDetails> details = helper.getAttachmentMessages("claim");
-        //    Assert.IsTrue(details.Count == 1);
-        //}
+        [TestMethod]
+        public void ProcessInboxBusinessLayer()
+        {
+            checkMessageSend();
+            XmlDocument mailConfig = new XmlDocument();
+            mailConfig.Load("./mailConfig.xml");
+            ProcessInbox inbox = new ProcessInbox(mailConfig, "http://localhost:8000/expense/claim");
+            inbox.ProcessMailForExpenses("claim");
+        }
 
         [TestCleanup()]
         public void cleanUp()

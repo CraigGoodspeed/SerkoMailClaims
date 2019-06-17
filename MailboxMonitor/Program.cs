@@ -17,7 +17,7 @@ namespace MailboxMonitor
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[] 
             { 
-                new Service1() 
+                new Monitor() 
             };
             ServiceBase.Run(ServicesToRun);
         }

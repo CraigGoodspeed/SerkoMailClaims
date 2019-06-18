@@ -24,17 +24,14 @@ namespace MailboxMonitor
             InitializeComponent();
         }
 
-        
-
         protected override void OnStart(string[] args)
         {
             string smtpConfig = System.Configuration.ConfigurationManager.AppSettings["mailSetupPath"];
-            
             timer.Interval = int.Parse(System.Configuration.ConfigurationManager.AppSettings["mailCheckIntervalSeconds"]) * 1000;
             httpRestEndPoint = System.Configuration.ConfigurationManager.AppSettings["restEndPoint"];
-            XmlDocument xdoc = new XmlDocument();
-            xdoc.Load(smtpConfig);
-            inbox = new ProcessInbox(xdoc, httpRestEndPoint);
+            inbox = new ProcessInbox(httpRestEndPoint);
+            inbox.ProcessMailForExpenses("claim");
+            timer.Start();
         }
 
         protected override void OnStop()

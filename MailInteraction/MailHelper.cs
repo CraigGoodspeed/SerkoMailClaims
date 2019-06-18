@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,12 +42,25 @@ namespace MailInteraction
 
         public void sendMessage(string toAddress, string body, string subject)
         {
+            sendMessage(toAddress, body, string.Empty, subject);
+        }
+
+        public void sendMessage(string toAddress, string body, string messageId, string subject)
+        {
             SmtpClient client = new SmtpClient();
             client.Host = smtpServer.url;
             client.Port = smtpServer.port;
             client.EnableSsl = smtpServer.useSSL;
             client.Credentials = new NetworkCredential(username, password);
+            
             using(MailMessage sendMe = new MailMessage(new MailAddress(username), new MailAddress(toAddress))){
+                
+                sendMe.IsBodyHtml = true;
+                if (!string.IsNullOrEmpty(messageId))
+                {
+                    sendMe.Headers.Add("In-Reply-To", messageId);
+                    sendMe.Headers.Add("References", messageId);
+                }
                 sendMe.Subject = subject;
                 sendMe.Body = body;
                 client.Send(sendMe);

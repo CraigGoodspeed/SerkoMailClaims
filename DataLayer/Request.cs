@@ -23,6 +23,7 @@ namespace DataLayer
         public string MailFrom { get; set; }
         public byte[] MailContent { get; set; }
         public System.DateTime CreateDate { get; set; }
+        public string MessageID { get; set; }
     
         public virtual ICollection<Expense> Expenses { get; set; }
     }

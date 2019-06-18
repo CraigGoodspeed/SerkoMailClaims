@@ -16,7 +16,7 @@ namespace DataLayer.DAO
         public Expense CreateExpense(ExpenseDTO dto, Request req)
         {
             Expense toSave = dto.CreateExpense();
-            toSave.Request = req;
+            toSave.RequestID = req.id;
             entities.Expenses1.Add(toSave);
             entities.SaveChanges();
             return toSave;

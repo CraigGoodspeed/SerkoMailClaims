@@ -34,6 +34,7 @@
     <Content Include="databaseDefinition\masterLog.xml" />
     <Content Include="databaseDefinition\schema\addNullableRequest.xml" />
     <Content Include="databaseDefinition\schema\initialCreate.xml" />
+    <Content Include="databaseDefinition\schema\addMessageIDtoRequest.xml" />
     <Content Include="liquibase.bat" />
     <Content Include="mailclaims.properties" />
   </ItemGroup>

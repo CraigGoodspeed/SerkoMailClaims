@@ -16,7 +16,7 @@ namespace MailHandler
         private const char CLOSECHARACTER = '>';
         private const string CLOSINGSTRING = "</{0}>";
         private const string ROOTELEMENTTORETURN = "expense";
-        private const string regExToValidateElementNames = "[@?/]";
+        private const string regExToValidateElementNames = "[@?/\"]";
         public static XmlDocument ParseString(string toParse, string rootElementName = ROOTELEMENTTORETURN)
         {
             XmlDocument toReturn = new XmlDocument();
@@ -68,8 +68,12 @@ namespace MailHandler
                         }
                         else
                         {
-                            currentNode.InnerXml = content.Substring(0, content.Length - endString.Length);
-                            rootElement.AppendChild(currentNode);
+                            try
+                            {
+                                currentNode.InnerXml = content.Substring(0, content.Length - endString.Length);
+                                rootElement.AppendChild(currentNode);
+                            }
+                            catch (XmlException) { }//do nothing, the contents is funny html markup. Other exceptions will be thrown.
                         }
                         open = false;
                         currentElement = string.Empty;

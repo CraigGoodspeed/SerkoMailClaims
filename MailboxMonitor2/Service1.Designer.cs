@@ -1,6 +1,6 @@
-﻿namespace MailboxMonitor
+﻿namespace MailboxMonitor2
 {
-    partial class Monitor
+    partial class Service1
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,21 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.timer = new System.Windows.Forms.Timer(this.components);
-            // 
-            // timer
-            // 
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
-            // 
-            // Monitor
-            // 
-            this.ServiceName = "MailboxMonitor";
-
+            components = new System.ComponentModel.Container();
+            this.ServiceName = "Service1";
         }
 
         #endregion
-
-        private System.Windows.Forms.Timer timer;
     }
 }

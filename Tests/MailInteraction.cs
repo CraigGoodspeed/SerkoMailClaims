@@ -46,10 +46,10 @@ namespace Tests
         [TestMethod]
         public void ProcessInboxBusinessLayer()
         {
-            checkMessageSend();
-            XmlDocument mailConfig = new XmlDocument();
-            mailConfig.Load("./mailConfig.xml");
-            ProcessInbox inbox = new ProcessInbox(mailConfig, "http://localhost:8000/expense/claim");
+            //checkMessageSend();
+            //XmlDocument mailConfig = new XmlDocument();
+            //mailConfig.Load("./mailConfig.xml");
+            ProcessInbox inbox = new ProcessInbox("http://localhost:8000/expense/claim");
             inbox.ProcessMailForExpenses("claim");
         }
 

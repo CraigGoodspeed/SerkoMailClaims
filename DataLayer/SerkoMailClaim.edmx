@@ -26,6 +26,7 @@
           <Property Name="mail_from" Type="varchar" MaxLength="1000" Nullable="false" />
           <Property Name="mail_content" Type="mediumblob" Nullable="false" />
           <Property Name="create_date" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="messageID" Type="varchar" MaxLength="255" />
         </EntityType>
         <Association Name="FK_EXPENSE_REQUEST">
           <End Role="request" Type="Self.request" Multiplicity="0..1" />
@@ -74,6 +75,7 @@
           <Property Name="MailContent" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="Expenses" Relationship="Self.FK_EXPENSE_REQUEST" FromRole="request" ToRole="expense" />
+          <Property Name="MessageID" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_EXPENSE_REQUEST">
           <End Role="request" Type="SerkoMailClaimModel.Request" Multiplicity="0..1" />
@@ -118,6 +120,7 @@
           <EntitySetMapping Name="Requests1">
             <EntityTypeMapping TypeName="SerkoMailClaimModel.Request">
               <MappingFragment StoreEntitySet="request">
+                <ScalarProperty Name="MessageID" ColumnName="messageID" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="MailFrom" ColumnName="mail_from" />
                 <ScalarProperty Name="MailContent" ColumnName="mail_content" />

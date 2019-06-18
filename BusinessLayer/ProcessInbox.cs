@@ -1,10 +1,13 @@
-﻿using DataLayer;
+﻿using BusinessLayer.Message;
+using BusinessLayer.Validators;
+using DataLayer;
 using DataLayer.DAO;
 using DataLayer.DTO;
 using MailInteraction;
 using Pop3;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,8 +25,9 @@ namespace BusinessLayer
         string username;
         string password;
 
-        public ProcessInbox(XmlDocument xdoc, string restEndPoint)
+        public ProcessInbox(string restEndPoint)
         {
+            XmlDocument xdoc = getMailConfiguration();
             XmlSerializer serializer = new XmlSerializer(typeof(MailInteraction.ServerProperties));
             smtp = Deserialiser.loadMailConfiguration(xdoc.SelectSingleNode("//mailConfig/smtpProperties/ServerProperties"), serializer);
             pop3 = Deserialiser.loadMailConfiguration(xdoc.SelectSingleNode("//mailConfig/pop3Properties/ServerProperties"), serializer);
@@ -34,6 +38,15 @@ namespace BusinessLayer
             this.restEndPoint = restEndPoint;
 
         }
+        private XmlDocument getMailConfiguration()
+        {
+            XmlDocument xdoc = new XmlDocument();
+            using (Stream stream = this.GetType().Assembly.GetManifestResourceStream("BusinessLayer.mailConfig.xml"))
+            {
+                xdoc.Load(stream);
+            }
+            return xdoc;
+        }
         public void ProcessMailForExpenses(string subjectName)
         {
             List<Pop3Message> claims = mailHelper.getStringMessages(subjectName);
@@ -42,17 +55,22 @@ namespace BusinessLayer
 
                 //store the request....
                 RequestDAO request = new RequestDAO();
-                Request req = request.createRequest(claim.From, claim.RawMessage, DateTime.Now);
-                //call the rest service.
-                XmlDocument xdoc = RestHelper.callRestService(restEndPoint, claim.Body);
-                ExpenseDTO expenseDTO = Deserialiser.deserialiseContent<ExpenseDTO>(xdoc);
-                ExpenseDAO expenseDAO = new ExpenseDAO();
+                if (request.shouldProcess(claim.MessageId))
+                {
+                    Request req = request.createRequestOrGetRequest(claim.From, claim.Body, DateTime.Now, claim.MessageId);
+                    //call the rest service.
+                    XmlDocument xdoc = RestHelper.callRestService(restEndPoint, claim.Body);
+                    ExpenseDTO expenseDTO = Deserialiser.deserialiseContent<ExpenseDTO>(xdoc);
+                    ExpenseDAO expenseDAO = new ExpenseDAO();
+                    Expense expenseToValidate = expenseDAO.CreateExpense(expenseDTO, req);
 
-                expenseDAO.CreateExpense(expenseDTO, req);
+                    ExpenseValidator validator = new ExpenseValidator(expenseToValidate);
 
-                //deserialise the content
-                //validate the request
-                //store - valid request or failure and respond to user
+                    mailHelper.sendMessage(claim.From, validator.getMessage(), claim.MessageId, string.Format("response to claim dated {0}", claim.Date));
+                    //deserialise the content
+                    //validate the request
+                    //store - valid request or failure and respond to user
+                }
 
             }
         }

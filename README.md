@@ -6,7 +6,9 @@ The process is as follows
 
 1) There is a timer currently set to poll the mailbox every 5 minutes, this timer will then download all emails from the mail address configured in mailConfig.xml. If you inspect the file you will find
 
+
 username: serkomailclaim@gmail.com
+
 password: Th!$!$$3cur3!
 
 2) The mails are downloaded and checked for two criteria

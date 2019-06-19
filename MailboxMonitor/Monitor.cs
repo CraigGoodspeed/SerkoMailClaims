@@ -19,32 +19,41 @@ namespace MailboxMonitor
     {
         string httpRestEndPoint;
         ProcessInbox inbox;
+        System.Timers.Timer timer = null;
         public Monitor()
         {
             InitializeComponent();
+            
         }
 
         protected override void OnStart(string[] args)
         {
+            resetTimer();
+        }
+
+        static void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
             string smtpConfig = System.Configuration.ConfigurationManager.AppSettings["mailSetupPath"];
-            timer.Interval = int.Parse(System.Configuration.ConfigurationManager.AppSettings["mailCheckIntervalSeconds"]) * 1000;
-            httpRestEndPoint = System.Configuration.ConfigurationManager.AppSettings["restEndPoint"];
-            inbox = new ProcessInbox(httpRestEndPoint);
+            string httpRestEndPoint = System.Configuration.ConfigurationManager.AppSettings["restEndPoint"];
+            ProcessInbox inbox = new ProcessInbox(httpRestEndPoint);
             inbox.ProcessMailForExpenses("claim");
-            timer.Start();
+        }
+        private void resetTimer()
+        {
+            timer = new System.Timers.Timer();
+            timer.Interval = double.Parse(System.Configuration.ConfigurationManager.AppSettings["mailCheckIntervalSeconds"]) * 1000;
+            timer.Elapsed += new System.Timers.ElapsedEventHandler(timer_Elapsed);
+            timer.AutoReset = true;
+            timer.Enabled = true;
         }
 
         protected override void OnStop()
         {
-            inbox.Dispose();
+            try
+            {
+                inbox.Dispose();
+            }
+            catch (Exception) { }
         }
-
-        private void timer_Tick(object sender, EventArgs e)
-        {
-            inbox.ProcessMailForExpenses("claim");
-        }
-
-        
-        
     }
 }

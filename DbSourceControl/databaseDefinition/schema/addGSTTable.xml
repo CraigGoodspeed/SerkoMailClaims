@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+  <changeSet author="craig" id="initial_gst_table">
+    <createTable tableName="gst_values">
+      <column name="id" type="int" autoIncrement="true">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_gst"/>
+      </column>
+      <column name="start_date" type="datetime" >
+        <constraints nullable="false"/>
+      </column>
+      <column name="end_date" type="datetime">
+      </column>
+      <column name="value" type="decimal(10,2)">
+      </column>
+    </createTable>
+  </changeSet>
+  <changeSet author="craig" id="insertinitialvalue">
+    <insert tableName="gst_values">
+      <column name="start_date" value="1000-01-01 00:00:00"/>
+      <column name="value" value="0.15"/>
+    </insert>
+  </changeSet>
+  <changeSet author="craig" id="createNotNullConstraint_gst_value_1">
+    <addNotNullConstraint
+      tableName="gst_values"
+      columnName="value"
+      columnDataType="decimal(10,2)"
+      
+      />
+  </changeSet>
+</databaseChangeLog>

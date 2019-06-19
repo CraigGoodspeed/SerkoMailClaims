@@ -18,6 +18,15 @@
           <Property Name="expense_date" Type="date" />
           <Property Name="request_id" Type="int" />
         </EntityType>
+        <EntityType Name="gst_values">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="start_date" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="end_date" Type="datetime" Precision="0" />
+          <Property Name="value" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+        </EntityType>
         <EntityType Name="request">
           <Key>
             <PropertyRef Name="id" />
@@ -42,6 +51,7 @@
         </Association>
         <EntityContainer Name="SerkoMailClaimModelStoreContainer">
           <EntitySet Name="expense" EntityType="Self.expense" Schema="serkomailclaim" store:Type="Tables" />
+          <EntitySet Name="gst_values" EntityType="Self.gst_values" Schema="serkomailclaim" store:Type="Tables" />
           <EntitySet Name="request" EntityType="Self.request" Schema="serkomailclaim" store:Type="Tables" />
           <AssociationSet Name="FK_EXPENSE_REQUEST" Association="Self.FK_EXPENSE_REQUEST">
             <End Role="request" EntitySet="request" />
@@ -96,7 +106,17 @@
             <End Role="request" EntitySet="Requests1" />
             <End Role="expense" EntitySet="Expenses1" />
           </AssociationSet>
+          <EntitySet Name="gst_values" EntityType="SerkoMailClaimModel.gst_values" />
         </EntityContainer>
+        <EntityType Name="gst_values">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="start_date" Type="DateTime" Nullable="false" />
+          <Property Name="end_date" Type="DateTime" />
+          <Property Name="value" Type="Decimal" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -125,6 +145,16 @@
                 <ScalarProperty Name="MailFrom" ColumnName="mail_from" />
                 <ScalarProperty Name="MailContent" ColumnName="mail_content" />
                 <ScalarProperty Name="CreateDate" ColumnName="create_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="gst_values">
+            <EntityTypeMapping TypeName="SerkoMailClaimModel.gst_values">
+              <MappingFragment StoreEntitySet="gst_values">
+                <ScalarProperty Name="value" ColumnName="value" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

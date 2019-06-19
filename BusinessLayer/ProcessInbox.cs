@@ -4,7 +4,6 @@ using DataLayer;
 using DataLayer.DAO;
 using DataLayer.DTO;
 using MailInteraction;
-using Pop3;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -49,24 +48,25 @@ namespace BusinessLayer
         }
         public void ProcessMailForExpenses(string subjectName)
         {
-            List<Pop3Message> claims = mailHelper.getStringMessages(subjectName);
-            foreach (Pop3Message claim in claims)
+            List<MailMessage> claims = mailHelper.getStringMessages(subjectName);
+            foreach (MailMessage claim in claims)
             {
 
                 //store the request....
                 RequestDAO request = new RequestDAO();
-                if (request.shouldProcess(claim.MessageId))
+                if (request.shouldProcess(claim.id))
                 {
-                    Request req = request.createRequestOrGetRequest(claim.From, claim.Body, DateTime.Now, claim.MessageId);
+                    
+                    Request req = request.createRequestOrGetRequest(claim.from, claim.body, DateTime.Now, claim.id);
                     //call the rest service.
-                    XmlDocument xdoc = RestHelper.callRestService(restEndPoint, claim.Body);
+                    XmlDocument xdoc = RestHelper.callRestService(restEndPoint, claim.body);
                     ExpenseDTO expenseDTO = Deserialiser.deserialiseContent<ExpenseDTO>(xdoc);
                     ExpenseDAO expenseDAO = new ExpenseDAO();
                     Expense expenseToValidate = expenseDAO.CreateExpense(expenseDTO, req);
 
                     ExpenseValidator validator = new ExpenseValidator(expenseToValidate);
 
-                    mailHelper.sendMessage(claim.From, validator.getMessage(), claim.MessageId, string.Format("response to claim dated {0}", claim.Date));
+                    mailHelper.sendMessage(claim.from, validator.getMessage(), claim.id, string.Format("response to claim dated {0}", claim.date));
                     //deserialise the content
                     //validate the request
                     //store - valid request or failure and respond to user

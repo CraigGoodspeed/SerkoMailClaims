@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,6 @@ namespace DataLayer.DTO
     [XmlRoot("expense")]
     public class ExpenseDTO 
     {
-        private const decimal _GST = 1.15m;
         private const string defaultCostCenter = "UNKNOWN";
         /*
          * <expense>
@@ -39,13 +39,6 @@ namespace DataLayer.DTO
         }
         [XmlElement("total")]
         public decimal Total { get; set; }
-        public decimal TotalExcludingGST
-        {
-            get
-            {
-                return Total / _GST;
-            }
-        }
         [XmlElement("description")]
         public string Description { get; set; }
         [XmlElement("payment_method")]
@@ -78,13 +71,29 @@ namespace DataLayer.DTO
             DateTime? toReturn;
             try
             {
-                toReturn = System.DateTime.Parse(date);
+                toReturn = System.DateTime.ParseExact(date, "dddd dd MMMM yyyy", CultureInfo.InvariantCulture);
             }
             catch (Exception)
             {
                 toReturn = null;
             }
             return toReturn;
+        }
+
+        public bool isEmpty()
+        {
+            return
+                CostCentre == defaultCostCenter
+                &&
+                Total == 0
+                &&
+                string.IsNullOrEmpty(Description)
+                &&
+                string.IsNullOrEmpty(PaymentMethod)
+                &&
+                string.IsNullOrEmpty(ExpenseDate)
+                &&
+                string.IsNullOrEmpty(Vendor);
         }
     }
 }

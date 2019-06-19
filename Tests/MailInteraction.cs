@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MailInteraction;
 using System.Collections.Generic;
 using MailHandler;
-using Pop3;
+
 using DataLayer.DTO;
 using DataLayer;
 using System.Xml;
@@ -19,9 +19,9 @@ namespace Tests
         [TestInitialize()]
         public void setupVariables()
         {
-            ServerProperties pop3 = new ServerProperties("pop.gmail.com", 995, true);
-            ServerProperties smtp = new ServerProperties("smtp.gmail.com", 587, true);
-            helper = new MailHelper(pop3, smtp, "serkomailclaims@gmail.com", "Th!$!$$3cur3!");
+            //ServerProperties pop3 = new ServerProperties("pop.gmail.com", 995, true);
+            //ServerProperties smtp = new ServerProperties("smtp.gmail.com", 587, true);
+            //helper = new MailHelper(pop3, smtp, "serkomailclaims@gmail.com", "Th!$!$$3cur3!");
         }
         public void checkMessageSend()
         {
@@ -32,13 +32,13 @@ namespace Tests
         public void CheckGmailConnection()
         {
             checkMessageSend();
-            List<Pop3.Pop3Message> details = helper.getStringMessages("claim");
-            foreach (Pop3Message claim in details)
+            List<MailMessage> details = helper.getStringMessages("claim");
+            foreach (MailMessage claim in details)
             {
-                ExpenseDTO ex = StringHelper.deserialiseContent<ExpenseDTO>(claim.RawMessage);
+                ExpenseDTO ex = StringHelper.deserialiseContent<ExpenseDTO>(claim.body);
                 if(ex.Total != 0)
                     Assert.IsTrue(ex.Total == new decimal(1024.01d));
-                helper.sendMessage(claim.From, "thank you for submitting your claim, it is busy being processed.", "this claim is being processed");
+                helper.sendMessage(claim.from, "thank you for submitting your claim, it is busy being processed.", "this claim is being processed");
             }
         }
 
@@ -52,11 +52,12 @@ namespace Tests
             ProcessInbox inbox = new ProcessInbox("http://localhost:8000/expense/claim");
             inbox.ProcessMailForExpenses("claim");
         }
-
-        [TestCleanup()]
-        public void cleanUp()
+        [TestMethod]
+        public void checkDateParse()
         {
-            helper.Dispose();
+            ExpenseDTO dto = new ExpenseDTO();
+            Assert.IsTrue(dto.parseDate("Tuesday 23 April 2019").HasValue);
         }
+        
     }
 }

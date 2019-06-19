@@ -4,6 +4,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MailHandler;
 using System.Xml.Serialization;
 using DataLayer.DTO;
+using DataLayer.DAO;
+using DataLayer;
+using System.Text;
 
 namespace Tests
 {
@@ -36,6 +39,23 @@ namespace Tests
             Assert.IsTrue(expenseClaim.CostCentre == "DEV002");
 
 
+        }
+        [TestMethod]
+        public void parseRequestID()
+        {
+            int requestID = 1284;
+            RequestDAO dao = new RequestDAO();
+            Request req = dao.getById(requestID);
+            string toParse = Encoding.UTF8.GetString(req.MailContent);
+            XmlDocument parsedSample = StringHelper.ParseString(toParse);
+            Assert.IsTrue(!BusinessLayer.Deserialiser.deserialiseContent<ExpenseDTO>(parsedSample).isEmpty());
+        }
+        [TestMethod]
+        public void parseErrorNoClosingTag()
+        {
+            string toParse = "<total>112.12</total>\nasdkjhaskd ajskdh\n<cost_centre>mooo</cost_centre>\nuahsd<notclosed>";
+            XmlDocument parsedSample = StringHelper.ParseString(toParse);
+            Assert.IsTrue(BusinessLayer.Deserialiser.deserialiseContent<ExpenseDTO>(parsedSample).isEmpty());
         }
         [TestMethod]
         public void AttemptCustomPOP()

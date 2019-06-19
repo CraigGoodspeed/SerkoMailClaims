@@ -30,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Pop3, Version=2.2.2.0, Culture=neutral, PublicKeyToken=e33d940baacd0f37, processorArchitecture=MSIL">
-      <HintPath>..\packages\Pop3.2.2.2\lib\net40\Pop3.dll</HintPath>
+    <Reference Include="OpenPop, Version=2.0.6.1120, Culture=neutral, PublicKeyToken=6bdb97f144b7efc8, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenPop.NET.2.0.6.1120\lib\net40\OpenPop.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="Deserialiser.cs" />
     <Compile Include="Message\ExpenseMessage.cs" />
     <Compile Include="Message\IMessage.cs" />
@@ -51,10 +52,16 @@
     <Compile Include="ProcessInbox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RestHelper.cs" />
+    <Compile Include="Validators\ExpenseValidationItems\ExpenseDateValidation.cs" />
+    <Compile Include="Validators\ExpenseValidationItems\ExpenseDescriptionValidation.cs" />
+    <Compile Include="Validators\ExpenseValidationItems\ExpensePaymentMethodValidation.cs" />
+    <Compile Include="Validators\ExpenseValidationItems\ExpenseVendorValidation.cs" />
     <Compile Include="Validators\ExpenseValidator.cs" />
-    <Compile Include="Validators\IValidation.cs" />
-    <Compile Include="Validators\ValidationItems\ExpenseTotalValidation.cs" />
-    <Compile Include="Validators\ValidationItems\ExpenseVendorValidation.cs" />
+    <Compile Include="Validators\FailValidation.cs" />
+    <Compile Include="Validators\Validation.cs" />
+    <Compile Include="Validators\ExpenseValidationItems\ExpenseTotalValidation.cs" />
+    <Compile Include="Validators\ExpenseValidationItems\ExpenseCostCentreValidation.cs" />
+    <Compile Include="Validators\WarningValidation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

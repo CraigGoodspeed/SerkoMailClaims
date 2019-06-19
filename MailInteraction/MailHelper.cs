@@ -1,4 +1,5 @@
-﻿using Pop3;
+﻿using OpenPop.Mime;
+using OpenPop.Pop3;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +11,28 @@ using System.Threading.Tasks;
 
 namespace MailInteraction
 {
+    public class MailMessage
+    {
+        public string body { get; internal set; }
+        public string id { get; internal set; }
+        public string from { get; internal set; }
+        public string date { get; internal set; }
+        public MailMessage(string content, string id, string from, string date) {
+            this.body = content;
+            this.id = id;
+            this.from = from;
+            this.date = date;
+        }
+    }
     public class MailHelper : IDisposable
     {
+
         private string username;
         private string password;
         private ServerProperties popServer;
         private ServerProperties smtpServer;
-        private string messageSubject;
         Pop3Client mailClient;
+        
 
         public MailHelper(ServerProperties popServer, ServerProperties smtpServer, string username, string password)
         {
@@ -26,16 +41,24 @@ namespace MailInteraction
             this.popServer = popServer;
             this.smtpServer = smtpServer;
             this.password = password;
-            mailClient.Connect(popServer.url, username, password, popServer.port, popServer.useSSL);
+            mailClient.Connect(popServer.url, popServer.port, popServer.useSSL);
+            mailClient.Authenticate(username, password);
         }
 
-        private List<Pop3Message> getMessages(string subject)
+        private List<MailMessage> getMessages(string subject)
         {
-            IEnumerable<Pop3Message> messages = mailClient.ListAndRetrieve();
-            return messages.Where(i => i.Subject.ToUpper().IndexOf(subject.ToUpper()) > -1).ToList();
+            int messageCount = mailClient.GetMessageCount();
+            List<MailMessage> toReturn = new List<MailMessage>();
+            for (int i = 1; i <= messageCount; i++)
+            {
+                Message mailMessage = mailClient.GetMessage(i);
+
+                toReturn.Add(new MailMessage(mailMessage.FindFirstPlainTextVersion().GetBodyAsText(), mailMessage.Headers.MessageId, mailMessage.Headers.From.Address, mailMessage.Headers.Date));
+            }
+            return toReturn;
         }
 
-        public List<Pop3Message> getStringMessages(string subject)
+        public List<MailMessage> getStringMessages(string subject)
         {
             return getMessages(subject);
         }
@@ -52,9 +75,9 @@ namespace MailInteraction
             client.Port = smtpServer.port;
             client.EnableSsl = smtpServer.useSSL;
             client.Credentials = new NetworkCredential(username, password);
-            
-            using(MailMessage sendMe = new MailMessage(new MailAddress(username), new MailAddress(toAddress))){
-                
+
+            using (System.Net.Mail.MailMessage sendMe = new System.Net.Mail.MailMessage(new MailAddress(username), new MailAddress(toAddress)))
+            {
                 sendMe.IsBodyHtml = true;
                 if (!string.IsNullOrEmpty(messageId))
                 {

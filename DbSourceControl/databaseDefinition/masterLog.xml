@@ -3,4 +3,5 @@
   <include file="./schema/initialCreate.xml" relativeToChangelogFile="true"/>
   <include file="./schema/addMessageIDtoRequest.xml" relativeToChangelogFile="true"/>
   <include file="./schema/addNullableRequest.xml" relativeToChangelogFile="true"/>
+  <include file="./schema/addGSTTable.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

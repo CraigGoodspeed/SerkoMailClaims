@@ -1,5 +1,5 @@
 ﻿using BusinessLayer.Message;
-using BusinessLayer.Validators.ValidationItems;
+using BusinessLayer.Validators.ExpenseValidationItems;
 using DataLayer;
 using System;
 using System.Collections.Generic;
@@ -11,18 +11,14 @@ namespace BusinessLayer.Validators
 {
     public class ExpenseValidator
     {
-        Validation[] validationItems;
-        
+        Expense toValidate;
         public ExpenseValidator(Expense toValidate)
         {
-            validationItems = new Validation[]{
-                new ExpenseTotalValidation(toValidate.Total),
-                new ExpenseCostCentreValidation(toValidate.CostCentre)
-            };
+           this.toValidate = toValidate;
         }
         public string getMessage()
         {
-            return (new ExpenseMessage().getResponse(validationItems.ToList()));
+            return (new ExpenseMessage().getResponse(toValidate));
         }
 
 

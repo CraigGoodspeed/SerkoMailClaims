@@ -8,6 +8,7 @@
         <EntityTypeShape EntityType="SerkoMailClaimModel.Expense" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="SerkoMailClaimModel.Request" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
         <AssociationConnector Association="SerkoMailClaimModel.FK_EXPENSE_REQUEST" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SerkoMailClaimModel.gst_values" Width="1.5" PointX="0.75" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

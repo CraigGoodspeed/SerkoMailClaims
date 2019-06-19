@@ -76,9 +76,14 @@
   <ItemGroup>
     <Compile Include="DAO\BaseDAO.cs" />
     <Compile Include="DAO\ExpenseDAO.cs" />
+    <Compile Include="DAO\GSTDAO.cs" />
     <Compile Include="DAO\RequestDAO.cs" />
     <Compile Include="DTO\ExpenseDTO.cs" />
+    <Compile Include="entity\Expense.cs" />
     <Compile Include="Expense.cs">
+      <DependentUpon>SerkoMailClaim.tt</DependentUpon>
+    </Compile>
+    <Compile Include="gst_values.cs">
       <DependentUpon>SerkoMailClaim.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

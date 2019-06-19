@@ -27,5 +27,6 @@ namespace DataLayer
     
         public DbSet<Expense> Expenses1 { get; set; }
         public DbSet<Request> Requests1 { get; set; }
+        public DbSet<gst_values> gst_values { get; set; }
     }
 }

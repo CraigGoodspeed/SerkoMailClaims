@@ -82,7 +82,13 @@ namespace MailHandler
                     }
                 }
             }
-
+            if (!string.IsNullOrEmpty(currentElement))//no closing tag
+            {
+                toReturn.RemoveAll();
+                rootElement.RemoveAll();
+                rootElement = toReturn.CreateElement(rootElementName);
+                toReturn.AppendChild(rootElement);
+            }
             return toReturn;
         }
         public static void ManipulateCharArray(char[] items, char nextItem)

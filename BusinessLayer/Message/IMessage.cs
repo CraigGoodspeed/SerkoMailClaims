@@ -10,6 +10,5 @@ namespace BusinessLayer.Message
     {
         bool isValid { get; set; }
 
-        string getResponse(List<BusinessLayer.Validators.Validation> validateThis);
     }
 }

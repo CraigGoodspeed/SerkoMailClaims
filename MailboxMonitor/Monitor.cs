@@ -17,8 +17,6 @@ namespace MailboxMonitor
 {
     public partial class Monitor : ServiceBase
     {
-        string httpRestEndPoint;
-        ProcessInbox inbox;
         System.Timers.Timer timer = null;
         public Monitor()
         {
@@ -37,6 +35,11 @@ namespace MailboxMonitor
             string httpRestEndPoint = System.Configuration.ConfigurationManager.AppSettings["restEndPoint"];
             ProcessInbox inbox = new ProcessInbox(httpRestEndPoint);
             inbox.ProcessMailForExpenses("claim");
+            try
+            {
+                inbox.Dispose();
+            }
+            catch (Exception) { }//fail silently
         }
         private void resetTimer()
         {
@@ -49,11 +52,6 @@ namespace MailboxMonitor
 
         protected override void OnStop()
         {
-            try
-            {
-                inbox.Dispose();
-            }
-            catch (Exception) { }
         }
     }
 }
